@@ -55,13 +55,11 @@ external_stylesheets = [
     'crossorigin': 'anonymous'
 }
 ]
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
-
 ### CSS inline styling ###
 bodyMain = {
-    "backgroundImage" : "url(./assets/images/covid.jpg)",
+    "backgroundImage" : "url(./assets/covid.jpg)",
     "backgroundSize" : "cover",
     "backgroundRepeat" : "no-repeat",
     "margin" : "-8px",
