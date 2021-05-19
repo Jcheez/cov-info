@@ -21,18 +21,25 @@ async def get_data(link, session):
 
 data = asyncio.get_event_loop().run_until_complete(main())
 
+### Latest Item ###
 result = data[0]
+result['updatedActive'] = result['inCommunityFacilites'] + result['stableHospitalized'] + result['criticalHospitalized']
+result["updatedInfected"] = result['deceased'] + result['updatedActive'] + result['discharged']
 date = result['lastUpdatedAtApify']
 newdate = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.000Z")    
 result['lastUpdatedAtApify'] = str(newdate)
 
+### Historical Items ###
 newresult = data[1]
 newresult.reverse()
 def map_func(dictionary):
     dictionary["date"] = str(datetime.datetime.strptime(dictionary['lastUpdatedAtApify'], "%Y-%m-%dT%H:%M:%S.000Z").date())
     return dictionary
 newresult = list(map(map_func, newresult))
-infections = list(np.diff(list(map(lambda x: x['infected'], newresult))))
+for d in newresult:
+    d['updatedActive'] = d['inCommunityFacilites'] + d['stableHospitalized'] + d['criticalHospitalized']
+    d["updatedInfected"] = d['deceased'] + d['updatedActive'] + d['discharged']
+infections = list(np.diff(list(map(lambda x: x['updatedInfected'], newresult))))
 infections.insert(0,0)
 counter = 0
 for d in newresult:

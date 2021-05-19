@@ -16,8 +16,9 @@ external_stylesheets = [
     'crossorigin': 'anonymous'
 }
 ]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, title="COV-INFO")
 server = app.server
+
 ### CSS inline styling ###
 bodyMain = {
     "backgroundImage" : "url(./assets/covid.jpg)",
@@ -116,7 +117,7 @@ infectionRate.update_layout({
 activeCases = px.line(
     data_frame=df,
     x='date',
-    y='activeCases',
+    y='updatedActive',
     labels={"date":"Date", "activeCases":"Number of active Cases"}
 )
 
@@ -167,12 +168,12 @@ app.layout = html.Div(children=[
     ], style=bodyMain),
     html.Div(children=[
         html.Section(children=[
-            html.Span(children=["Infected", html.Br(), html.Br(), html.Span(f"{latest['infected']}", className="resultOverallStats")], className="overallStats"),
+            html.Span(children=["Infected", html.Br(), html.Br(), html.Span(f"{latest['updatedInfected']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["Discharged", html.Br(), html.Br(), html.Span(f"{latest['discharged']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["Quarantined", html.Br(), html.Br(), html.Span(f"{latest['inCommunityFacilites']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["Hospitalised (Stable)", html.Br(), html.Br(), html.Span(f"{latest['stableHospitalized']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["Hospitalised (Critical)", html.Br(), html.Br(), html.Span(f"{latest['criticalHospitalized']}", className="resultOverallStats")], className="overallStats"),
-            html.Span(children=["Active Cases", html.Br(), html.Br(), html.Span(f"{latest['activeCases']}", className="resultOverallStats")], className="overallStats"),
+            html.Span(children=["Active Cases", html.Br(), html.Br(), html.Span(f"{latest['updatedActive']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["Deceased", html.Br(), html.Br(), html.Span(f"{latest['deceased']}", className="resultOverallStats")], className="overallStats"),
             html.Span(children=["New Cases", html.Br(), html.Br(), html.Span(f"{historical[-1]['communityCases']}", className="resultOverallStats")], className="overallStats")
         ], style={"display" : "flex", "justifyContent" : "center", "alignItems" : "center", "flexWrap" : "wrap", "height" : "100vh", "width":"100vw"}),
@@ -187,7 +188,7 @@ app.layout = html.Div(children=[
     html.Div(children=[
         dcc.Graph(figure=activeCases, id="activeCases", style=graphStylesEven, config={'displayModeBar': False}),
         html.Div(children=[
-            html.P("Active Case", style={"marginTop":"18vh", "marginBottom":"0", "display":"inline-block"}),
+            html.P("Active Cases", style={"marginTop":"18vh", "marginBottom":"0", "display":"inline-block"}),
             html.P("This chart shows the number of active covid cases", style={"fontSize": "1.5vw", "marginRight":"1vw"}),
         ], style=textStyleGraphsEven),
     ], style={"height" : "50vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden"}),
@@ -208,15 +209,16 @@ app.layout = html.Div(children=[
     html.Footer(children=[
         html.P(children=[
             html.P(children=[
-                html.A(className="fab fa-github", href="https://github.com/Jcheez"),
-                html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/"),
-                html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/")
+                html.A(className="fab fa-github", href="https://github.com/Jcheez", target="_blank"),
+                html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/", target="_blank"),
+                html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/", target="_blank")
             ]),
             "© JCHEEZ | INFO: ",
             html.A(" APIFY", href="https://apify.com/tugkan/covid-sg", style={"color":"#8f9193"}, target="_blank"),
             " | IMAGES: ",
             html.A("FLAT ICON", href="https://www.flaticon.com/", style={"color":"#8f9193"}, target="_blank"),
-        ], style={"color":"#8f9193", "fontSize":"1.5vw", "marginTop":"7vh",})
+            html.P("Information displayed is meant for reference only, it can be slightly inaccurate due to update lags by MOH")
+        ], style={"color":"#8f9193", "fontSize":"1vw", "marginTop":"5vh",})
     ],style={"height" : "20vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden", "backgroundColor":"#192819", "textAlign":"center"})
 ])
 
