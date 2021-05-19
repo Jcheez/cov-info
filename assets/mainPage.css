@@ -1,0 +1,51 @@
+html {
+    scroll-behavior: smooth;
+}
+
+#aMain::after {
+    background-image: url(./images/down-arrow.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: '';
+    display: block;
+    height: 1.5em;
+    left: 50%;
+    margin: 0 0 0 -0.75em;
+    position: absolute;
+    width: 1.5em;
+}
+
+.overallStats {
+    display: inline-block;
+    color:white;
+    font-size: 3vw;
+    width:40vw;
+    height : 20vh;
+    text-align: center;
+}
+
+.resultOverallStats {
+    display: block;
+}
+
+#infectionRate::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+[target="_blank"]:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+[class*="fa-"]:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+[class*="fa-"] {
+   padding-right: 3vw;
+   color:#8f9193
+  }
