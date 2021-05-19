@@ -55,7 +55,9 @@ external_stylesheets = [
     'crossorigin': 'anonymous'
 }
 ]
+
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 ### CSS inline styling ###
 bodyMain = {
