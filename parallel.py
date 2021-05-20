@@ -4,7 +4,7 @@ import numpy as np
 import aiohttp
 
 
-links = ["https://api.apify.com/v2/key-value-stores/yaPbKe9e5Et61bl7W/records/LATEST?disableRedirect=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=16&desc=true"]
+links = ["https://api.apify.com/v2/key-value-stores/yaPbKe9e5Et61bl7W/records/LATEST?disableRedirect=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=15&desc=true"]
 async def main():
     async with aiohttp.ClientSession() as session:
         tasks = []
