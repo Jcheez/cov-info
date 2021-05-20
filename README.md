@@ -11,5 +11,8 @@ This dashboard provides charts of various types which provides trends and insigh
 1. Figures are updated daily (Based on when MOH releases Data)
 2. Graphs allows certain variables to be hidden
 
+### Future Plans
+- [ ] Allow multiple time periods to be chosen by user
+
 ### Deployed Link
 https://cov-info-2021.herokuapp.com/
