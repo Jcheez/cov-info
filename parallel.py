@@ -47,9 +47,9 @@ for d in newresult:
     d["communityCases"] = infections[counter]
     counter += 1
 
+# This code chunk formats data by only allowing 1 entry per date
 mapOutDates = list(set(list(map(lambda x: x['date'], newresult))))
 mapOutDates.sort(key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"))
-print(mapOutDates)
 formattedDates = []
 for date in mapOutDates:
     filtered_data = list(filter(lambda x: x['date'] == date, newresult))
@@ -60,4 +60,3 @@ for date in mapOutDates:
         formattedDates.append(filtered[0])
     else:
         formattedDates.append(filtered_data[0])
-print(formattedDates)
