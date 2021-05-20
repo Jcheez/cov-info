@@ -34,6 +34,7 @@ newresult = data[1]
 newresult.reverse()
 def map_func(dictionary):
     dictionary["date"] = str(datetime.datetime.strptime(dictionary['lastUpdatedAtApify'], "%Y-%m-%dT%H:%M:%S.000Z").date())
+    dictionary['dateTime'] = datetime.datetime.strptime(dictionary['lastUpdatedAtApify'], "%Y-%m-%dT%H:%M:%S.000Z")
     return dictionary
 newresult = list(map(map_func, newresult))
 for d in newresult:
@@ -45,3 +46,18 @@ counter = 0
 for d in newresult:
     d["communityCases"] = infections[counter]
     counter += 1
+
+mapOutDates = list(set(list(map(lambda x: x['date'], newresult))))
+mapOutDates.sort(key=lambda date: datetime.datetime.strptime(date, "%Y-%m-%d"))
+print(mapOutDates)
+formattedDates = []
+for date in mapOutDates:
+    filtered_data = list(filter(lambda x: x['date'] == date, newresult))
+    if len(filtered_data) > 1:
+        mapOutDatesFromFiltered = list(map(lambda x: x['dateTime'], filtered_data))
+        latestDate = max(mapOutDatesFromFiltered)
+        filtered = list(filter(lambda x: x['dateTime'] == latestDate, filtered_data))
+        formattedDates.append(filtered[0])
+    else:
+        formattedDates.append(filtered_data[0])
+print(formattedDates)

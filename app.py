@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from parallel import result as latest
-from parallel import newresult as historical
+from parallel import formattedDates as historical
 
 external_stylesheets = [
 {
