@@ -4,9 +4,11 @@ import dash_html_components as html
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
+from dash.dependencies import Input, Output
 
 from parallel import result as latest
-from parallel import formattedDates as historical
+from parallel import twoWeeks as historical
+from parallel import oneMonth as historical2
 
 external_stylesheets = [
 {
@@ -98,53 +100,6 @@ textStyleGraphsEven = {
 }
 
 ### Main Graphs ###
-df = pd.DataFrame(historical)
-infectionRate = px.line(
-    data_frame=df[1:],
-    x="date",
-    y="communityCases",
-    labels={"date":"Date", "communityCases":"Number of New Cases"},
-)
-
-infectionRate.update_layout({
-    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-    'font_size' : 20,
-    'xaxis' : {
-        'tickformat':'%d %B'
-    }
-})
-
-activeCases = px.line(
-    data_frame=df,
-    x='date',
-    y='updatedActive',
-    labels={"date":"Date", "activeCases":"Number of active Cases"}
-)
-
-activeCases.update_layout({
-    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-    'font_size' : 20,
-    'xaxis' : {
-        'tickformat':'%d %B'
-    }
-})
-
-activeCasesBreakdown = px.bar(
-    data_frame=df,
-    x="date",
-    y=["inCommunityFacilites", "stableHospitalized", "criticalHospitalized"],
-    labels={"date":"Date", "value":"Number of cases"},
-    barmode='group'
-)
-
-activeCasesBreakdown.update_layout({
-    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-    'font_size' : 20,
-    'xaxis' : {
-        'tickformat':'%d %B',
-    }
-})
-
 labels = ['Discharged', 'Active Cases', 'Deceased']
 values = [latest['discharged'], latest['activeCases'], latest['deceased']]
 casesBreakdown = go.Figure(data=[go.Pie(labels=labels, values=values)])
@@ -180,24 +135,45 @@ app.layout = html.Div(children=[
     ], style={"height" : "100vh", "margin" : "8px -8px -8px -8px", "backgroundColor" : "#21b2a6", "overflowX" : "hidden",}, id="daily-covid-cases"),
     html.Div(children=[
         html.Div(children=[
-            html.P("New Cases", style={"marginTop":"18vh", "marginBottom":"0", }),
+            html.P("New Cases", style={"marginTop":"17vh", "marginBottom":"0", }),
             html.P("This chart shows the number of new infections", style={"fontSize": "1.5vw"}),
+            dcc.Dropdown(
+                id="infectionRateDropdown", 
+                options=[{'label':"2 weeks", 'value':"2 weeks"},{'label':"4 weeks", 'value':"4 weeks"}], 
+                style={"color":"black", "cursor":"pointer","width":"14vw", "paddingLeft":"8vw", "fontSize":"1.5vw"},
+                searchable=False,
+                value='2 weeks'
+            )
         ], style=textStyleGraphsOdd),
-        dcc.Graph(figure=infectionRate, id="infectionRate", style=graphStylesOdd, config={'displayModeBar': False})
+        dcc.Graph(id="infectionRate", style=graphStylesOdd, config={'displayModeBar': False})
     ], style={"height" : "50vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden"}),
     html.Div(children=[
-        dcc.Graph(figure=activeCases, id="activeCases", style=graphStylesEven, config={'displayModeBar': False}),
+        dcc.Graph(id="activeCases", style=graphStylesEven, config={'displayModeBar': False}),
         html.Div(children=[
-            html.P("Active Cases", style={"marginTop":"18vh", "marginBottom":"0", "display":"inline-block"}),
+            html.P("Active Cases", style={"marginTop":"17vh", "marginBottom":"0", "display":"inline-block"}),
             html.P("This chart shows the number of active covid cases", style={"fontSize": "1.5vw", "marginRight":"1vw"}),
+            dcc.Dropdown(
+                id="activeCasesDropdown", 
+                options=[{'label':"2 weeks", 'value':"2 weeks"},{'label':"4 weeks", 'value':"4 weeks"}], 
+                style={"color":"black", "cursor":"pointer","width":"14vw", "paddingLeft":"8vw", "fontSize":"1.5vw"},
+                searchable=False,
+                value='2 weeks'
+            )
         ], style=textStyleGraphsEven),
     ], style={"height" : "50vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden"}),
     html.Div(children=[
         html.Div(children=[
             html.P("Active Cases Breakdown", style={"marginTop":"18vh", "marginBottom":"0", }),
             html.P("This chart shows the Breakdown of the current active cases", style={"fontSize": "1.5vw"}),
+            dcc.Dropdown(
+                id="activeCasesBreakdownDropdown", 
+                options=[{'label':"2 weeks", 'value':'2 weeks'},{'label':"4 weeks", 'value':'4 weeks'}], 
+                style={"color":"black", "cursor":"pointer","width":"14vw", "paddingLeft":"8vw", "fontSize":"1.5vw"},
+                searchable=False,
+                value='2 weeks'
+            )
         ], style=textStyleGraphsOdd),
-        dcc.Graph(figure=activeCasesBreakdown, id="activeCasesBreakdown", style=graphStylesOdd, config={'displayModeBar': False})
+        dcc.Graph(id="activeCasesBreakdown", style=graphStylesOdd, config={'displayModeBar': False})
     ], style={"height" : "50vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden"}),
     html.Div(children=[
         dcc.Graph(figure=casesBreakdown, id="casesBreakdown", style=graphStylesEven, config={'displayModeBar': False}),
@@ -207,13 +183,13 @@ app.layout = html.Div(children=[
         ], style=textStyleGraphsEven),
     ], style={"height" : "50vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden"}),
     html.Footer(children=[
-        html.P(children=[
+        html.Div(children=[
             html.P(children=[
                 html.A(className="fab fa-github", href="https://github.com/Jcheez", target="_blank"),
                 html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/", target="_blank"),
                 html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/", target="_blank")
             ]),
-            "V1.2.205 | © JCHEEZ 2021 | INFO: ",
+            "V2.1.235 | © JCHEEZ 2021 | INFO: ",
             html.A(" APIFY", href="https://apify.com/tugkan/covid-sg", style={"color":"#8f9193"}, target="_blank"),
             " | IMAGES: ",
             html.A("FLAT ICON", href="https://www.flaticon.com/", style={"color":"#8f9193"}, target="_blank"),
@@ -221,6 +197,132 @@ app.layout = html.Div(children=[
         ], style={"color":"#8f9193", "fontSize":"1vw", "marginTop":"5vh",})
     ],style={"height" : "20vh", "margin" : "8px -8px -8px -8px", "overflowX" : "hidden", "backgroundColor":"#192819", "textAlign":"center"})
 ])
+
+### Callbacks ###
+@app.callback(
+    Output(component_id='infectionRate', component_property='figure'),
+    Input(component_id='infectionRateDropdown', component_property='value')
+)
+def updateActiveCases(value):
+    if value == "4 weeks":
+        df = pd.DataFrame(historical2)
+        activeCases = px.line(
+            data_frame=df,
+            x='date',
+            y='communityCases',
+            labels={"date":"Date", "activeCases":"Number of active Cases"}
+        )
+
+        activeCases.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B'
+            }
+        })
+        return activeCases
+
+    else:
+        df = pd.DataFrame(historical)
+        activeCases = px.line(
+            data_frame=df,
+            x='date',
+            y='communityCases',
+            labels={"date":"Date", "activeCases":"Number of active Cases"}
+        )
+
+        activeCases.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B'
+            }
+        })
+        return activeCases
+
+@app.callback(
+    Output(component_id='activeCases', component_property='figure'),
+    Input(component_id='activeCasesDropdown', component_property='value')
+)
+def updateActiveCases(value):
+    if value == "4 weeks":
+        df = pd.DataFrame(historical2)
+        activeCases = px.line(
+            data_frame=df,
+            x='date',
+            y='updatedActive',
+            labels={"date":"Date", "activeCases":"Number of active Cases"}
+        )
+
+        activeCases.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B'
+            }
+        })
+        return activeCases
+
+    else:
+        df = pd.DataFrame(historical)
+        activeCases = px.line(
+            data_frame=df,
+            x='date',
+            y='updatedActive',
+            labels={"date":"Date", "activeCases":"Number of active Cases"}
+        )
+
+        activeCases.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B'
+            }
+        })
+        return activeCases
+
+@app.callback(
+    Output(component_id='activeCasesBreakdown', component_property='figure'),
+    Input(component_id='activeCasesBreakdownDropdown', component_property='value')
+)
+def updateActiveCasesBreakdown(value):
+    if value == "4 weeks":
+        df = pd.DataFrame(historical2)
+        activeCasesBreakdown = px.bar(
+            data_frame=df,
+            x="date",
+            y=["inCommunityFacilites", "stableHospitalized", "criticalHospitalized"],
+            labels={"date":"Date", "value":"Number of cases"},
+            barmode='group'
+        )
+
+        activeCasesBreakdown.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B',
+            }
+        })
+        return activeCasesBreakdown
+
+    else:
+        df = pd.DataFrame(historical)
+        activeCasesBreakdown = px.bar(
+            data_frame=df,
+            x="date",
+            y=["inCommunityFacilites", "stableHospitalized", "criticalHospitalized"],
+            labels={"date":"Date", "value":"Number of cases"},
+            barmode='group'
+        )
+
+        activeCasesBreakdown.update_layout({
+            'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+            'font_size' : 20,
+            'xaxis' : {
+                'tickformat':'%d %B',
+            }
+        })
+        return activeCasesBreakdown
 
 if __name__ == '__main__':
     app.run_server(debug=True)
