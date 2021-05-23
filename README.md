@@ -1,6 +1,6 @@
 # COV-INFO
 
-A dashboard that provides information about the current covid situation in Singapore.
+A dashboard that provides information about the current Covid-19 situation in Singapore.
 
 ### About
 
@@ -13,6 +13,9 @@ This dashboard provides charts of various types which provides trends and insigh
 
 ### Future Plans
 - [ ] Allow multiple time periods to be chosen by user
+- [ ] Adding indicator beside latest statistic to show increase/decrease
+- [ ] Adding box beside charts to allow user to have more chart options
+
 
 ### Deployed Link
 https://cov-info-2021.herokuapp.com/
