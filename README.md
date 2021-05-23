@@ -16,6 +16,9 @@ This dashboard provides charts of various types which provides trends and insigh
 - [ ] Adding indicator beside latest statistic to show increase/decrease
 - [ ] Adding box beside charts to allow user to have more chart options
 
+### ChangeLog
+
+[Click](https://github.com/Jcheez/cov-info/blob/master/CHANGELOG.md) here to view the Changelog
 
 ### Deployed Link
 https://cov-info-2021.herokuapp.com/
