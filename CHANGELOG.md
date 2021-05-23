@@ -11,3 +11,4 @@ Added:
 
 Added:
 1. Added dropdowns so that users can view monthly Charts
+2. Adding indicator beside latest statistic to show increase/decrease

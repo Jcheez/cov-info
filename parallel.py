@@ -2,7 +2,7 @@ import asyncio
 import datetime
 import numpy as np
 import aiohttp
-
+import pandas as pd
 
 links = ["https://api.apify.com/v2/key-value-stores/yaPbKe9e5Et61bl7W/records/LATEST?disableRedirect=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=15&desc=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=31&desc=true"] # Latest, 2 weeks, 1 Month
 async def main():
@@ -38,8 +38,8 @@ def formatResult(newresult):
     newresult.reverse()
     newresult = list(map(map_func, newresult))
     for d in newresult:
-        d['updatedActive'] = d['inCommunityFacilites'] + d['stableHospitalized'] + d['criticalHospitalized']
-        d["updatedInfected"] = d['deceased'] + d['updatedActive'] + d['discharged']
+        d['updatedActive'] = int(d['inCommunityFacilites'] + d['stableHospitalized'] + d['criticalHospitalized'])
+        d["updatedInfected"] = int(d['deceased'] + d['updatedActive'] + d['discharged'])
 
     # This code chunk formats data by only allowing 1 entry per date
     mapOutDates = list(set(list(map(lambda x: x['date'], newresult))))
@@ -59,10 +59,24 @@ def formatResult(newresult):
     infections.insert(0,0)
     counter = 0
     for d in formattedDates:
-        d["communityCases"] = infections[counter]
+        d["communityCases"] = int(infections[counter])
         counter += 1
 
     return formattedDates
 
+def comparePast2Days(data):
+    result = {}
+    newdata = data.copy()
+    newdata.reverse()
+    newdata = newdata[:2]
+    for row in newdata[0].keys():
+        datapacket = list(map(lambda x: x[row], newdata))
+        if type(datapacket[0]) == int:
+            result[row] = datapacket[0] - datapacket[1]
+
+    return result
+
 twoWeeks = formatResult(data[1])
+
 oneMonth = formatResult(data[2])
+latestStatsComparison = comparePast2Days(twoWeeks)
