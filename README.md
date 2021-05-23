@@ -12,9 +12,9 @@ This dashboard provides charts of various types which provides trends and insigh
 2. Graphs allows certain variables to be hidden
 
 ### Future Plans
-- [ ] Allow multiple time periods to be chosen by user
-- [ ] Adding indicator beside latest statistic to show increase/decrease
-- [ ] Adding box beside charts to allow user to have more chart options
+- [x] Allow multiple time periods to be chosen by user
+- [x] Adding indicator beside latest statistic to show increase/decrease
+- [x] Adding box beside charts to allow user to have more chart options
 
 ### ChangeLog
 

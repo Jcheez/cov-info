@@ -143,7 +143,7 @@ app.layout = html.Div(children=[
             html.Hr(style=hrStyle), 
             html.B("COV-INFO", style=textStyleMain), 
             html.Hr(style=hrStyle), 
-            html.P("A COMPREHENSIVE VISUAL ON THE COVID-19 SITUATION IN SINGAPORE", style=DescStyleMain),
+            html.P("A SIMPLE VISUAL ON THE COVID-19 SITUATION IN SINGAPORE", style=DescStyleMain),
             html.P(f"LAST UPDATED: {latest['lastUpdatedAtApify']}", style=DescStyleMain)
             ], style=sectionMain),
         html.Div(html.A("Learn More", href="#daily-covid-cases", style={"textDecoration" : "none", "color" : "white"}, id="aMain"), style=aStyleMain)
@@ -281,7 +281,7 @@ app.layout = html.Div(children=[
                 html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/", target="_blank"),
                 html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/", target="_blank")
             ]),
-            "V2.2.235 | © JCHEEZ 2021 | INFO: ",
+            "V2.3.235 | © JCHEEZ 2021 | INFO: ",
             html.A(" APIFY", href="https://apify.com/tugkan/covid-sg", style={"color":"#8f9193"}, target="_blank"),
             " | IMAGES: ",
             html.A("FLAT ICON", href="https://www.flaticon.com/", style={"color":"#8f9193"}, target="_blank"),
