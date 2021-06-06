@@ -1,3 +1,4 @@
+from os import name
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -57,17 +58,6 @@ hrStyle = {
     "width" : "16vw",
 }
 
-aStyleMain = {
-    "display" : "inline",
-    "position" : "relative",
-    "top" : "55vh",
-    "left" : "44vw",
-    "fontSize" : "2vw",
-    "color" : "White",
-    "width" : "16vw",
-    "height" : "16vh"
-}
-
 graphStylesOdd = {
     "height" : "50vh",
     "width" : "70vw",
@@ -122,18 +112,17 @@ childs = []
 for item in lsc.values():
     if item == 0:
         childs.append([
-            html.Span(className="fas fa-equals",style={"color":"white", "paddingRight": "0.5vw"}),
-            item
+            html.Span(style={"marginLeft":"-2vw"})
         ])
     elif item > 0:
         childs.append([
-            html.Span(className="fa fa-arrow-circle-up", style={"color":"white", "paddingRight": "0.5vw"}),
-            item
+            html.Span(className="fa fa-arrow-circle-up", style={"color":"#087829", "paddingRight": "0.5vw"}),
+            html.Span(children=item, style={"fontSize":"2.5vw"})
         ])
     elif item < 0:
         childs.append([
-            html.Span(className="fa fa-arrow-circle-down", style={"color":"white", "paddingRight": "0.5vw"}),
-            item
+            html.Span(className="fa fa-arrow-circle-down", style={"color":"#fe4c4c", "paddingRight": "0.5vw"}),
+            html.Span(children=item, style={"fontSize":"2.5vw"})
         ])
 
 ### Main HTML ###
@@ -146,7 +135,7 @@ app.layout = html.Div(children=[
             html.P("A SIMPLE VISUAL ON THE COVID-19 SITUATION IN SINGAPORE", style=DescStyleMain),
             html.P(f"LAST UPDATED: {latest['lastUpdatedAtApify']}", style=DescStyleMain)
             ], style=sectionMain),
-        html.Div(html.A("Learn More", href="#daily-covid-cases", style={"textDecoration" : "none", "color" : "white"}, id="aMain"), style=aStyleMain)
+        html.Div(html.A(html.Span("Learn More", id="aSpan"), href="#daily-covid-cases", style={"textDecoration" : "none", "color" : "white"}, id="aMain"))
     ], style=bodyMain),
     html.Div(children=[
         html.Header("Latest Statistics", style={"color":"white", "fontSize": "3vw", "textAlign":"center", "height":"7vh", "marginTop":"3vh"}),
@@ -157,7 +146,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['updatedInfected']}",
-                    html.Span(children=childs[0], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[0], href="#infectionRate", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -166,7 +155,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['discharged']}",
-                    html.Span(children=childs[1], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[1], href="#casesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -175,7 +164,7 @@ app.layout = html.Div(children=[
                 html.Br(),
                 html.Span(children=[
                     f"{latest['inCommunityFacilites']}",
-                    html.Span(children=childs[2], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[2], href="#activeCasesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -184,7 +173,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['stableHospitalized']}",
-                    html.Span(children=childs[3], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[3], href="#activeCasesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -193,7 +182,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['criticalHospitalized']}",
-                    html.Span(children=childs[4], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[4], href="#activeCasesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -202,7 +191,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['updatedActive']}",
-                    html.Span(children=childs[5], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[5], href="#activeCases", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -211,7 +200,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['deceased']}",
-                    html.Span(children=childs[6], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[1], href="#casesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
@@ -220,7 +209,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{historical[-1]['communityCases']}",
-                    html.Span(children=childs[10], style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[10], href="#infectionRate", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats")
         ], style={"display" : "flex", "justifyContent" : "center", "alignItems" : "center", "flexWrap" : "wrap", "height" : "90vh", "width":"100vw"}),
@@ -281,7 +270,7 @@ app.layout = html.Div(children=[
                 html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/", target="_blank"),
                 html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/", target="_blank")
             ]),
-            "V2.3.235 | © JCHEEZ 2021 | INFO: ",
+            "V3.9.235 | © JCHEEZ 2021 | INFO: ",
             html.A(" APIFY", href="https://apify.com/tugkan/covid-sg", style={"color":"#8f9193"}, target="_blank"),
             " | IMAGES: ",
             html.A("FLAT ICON", href="https://www.flaticon.com/", style={"color":"#8f9193"}, target="_blank"),
@@ -295,7 +284,7 @@ app.layout = html.Div(children=[
     Output(component_id='infectionRate', component_property='figure'),
     Input(component_id='infectionRateDropdown', component_property='value')
 )
-def updateActiveCases(value):
+def updateinfections(value):
     if value == "4 weeks":
         df = pd.DataFrame(historical2)[1:]
         infectionRate = px.line(
@@ -380,39 +369,63 @@ def updateActiveCases(value):
 def updateActiveCasesBreakdown(value):
     if value == "4 weeks":
         df = pd.DataFrame(historical2)
-        activeCasesBreakdown = px.bar(
-            data_frame=df,
-            x="date",
-            y=["inCommunityFacilites", "stableHospitalized", "criticalHospitalized"],
-            labels={"date":"Date", "value":"Number of cases"},
-            barmode='group'
-        )
+        activeCasesBreakdown = go.Figure()
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["inCommunityFacilites"].to_numpy(),
+            name="Quarantine"
+        ))
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["stableHospitalized"].to_numpy(),
+            name="Stable"
+        ))
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["criticalHospitalized"].to_numpy(),
+            name="Critical"
+        ))
 
         activeCasesBreakdown.update_layout({
             'paper_bgcolor': 'rgba(0, 0, 0, 0)',
             'font_size' : 20,
             'xaxis' : {
                 'tickformat':'%d %B',
-            }
+            },
+            'legend_title_text':'Type of Case',
+            'xaxis_title':'Date',
+            'yaxis_title':'Number of cases'
         })
         return activeCasesBreakdown
 
     else:
         df = pd.DataFrame(historical)
-        activeCasesBreakdown = px.bar(
-            data_frame=df,
-            x="date",
-            y=["inCommunityFacilites", "stableHospitalized", "criticalHospitalized"],
-            labels={"date":"Date", "value":"Number of cases"},
-            barmode='group'
-        )
+        activeCasesBreakdown = go.Figure()
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["inCommunityFacilites"].to_numpy(),
+            name="Quarantine"
+        ))
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["stableHospitalized"].to_numpy(),
+            name="Stable"
+        ))
+        activeCasesBreakdown.add_trace(go.Bar(
+            x=df["date"].to_numpy(),
+            y=df["criticalHospitalized"].to_numpy(),
+            name="Critical"
+        ))
 
         activeCasesBreakdown.update_layout({
             'paper_bgcolor': 'rgba(0, 0, 0, 0)',
             'font_size' : 20,
             'xaxis' : {
                 'tickformat':'%d %B',
-            }
+            },
+            'legend_title_text':'Type of Case',
+            'xaxis_title':'Date',
+            'yaxis_title':'Number of cases'
         })
         return activeCasesBreakdown
 

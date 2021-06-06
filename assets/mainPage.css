@@ -16,6 +16,33 @@ html {
     width: 1.5em;
 }
 
+@keyframes zoominandout {
+    0% {
+        -webkit-transform: scale(1,1);
+    }
+    50% {
+        -webkit-transform: scale(1.15, 1.15);
+    }
+    100% {
+        -webkit-transform: scale(1,1);
+    }
+}
+
+#aMain {
+    display: inline;
+    position: relative;
+    top: 55vh;
+    left: 44vw;
+    font-size: 2vw;
+    color: white;
+    width: 16vw;
+    height: 16vw;
+}
+
+#aSpan {
+    display: inline-block;
+    -webkit-animation: zoominandout 1s infinite;
+}
 .overallStats {
     display: inline-block;
     color:white;
@@ -49,3 +76,8 @@ html {
    padding-right: 3vw;
    color:#8f9193
   }
+
+.links {
+    text-decoration: none;
+    color: white;
+}
