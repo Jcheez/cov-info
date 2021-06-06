@@ -200,7 +200,7 @@ app.layout = html.Div(children=[
                 html.Br(), 
                 html.Span(children=[
                     f"{latest['deceased']}",
-                    html.Span(html.A(children=childs[1], href="#casesBreakdown", className="links"), style={"marginLeft": "2vw"})
+                    html.Span(html.A(children=childs[6], href="#casesBreakdown", className="links"), style={"marginLeft": "2vw"})
                 ], className="resultOverallStats"),
             ], className="overallStats"),
             html.Span(children=[
