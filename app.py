@@ -268,7 +268,7 @@ app.layout = html.Div(children=[
             html.P(children=[
                 html.A(className="fab fa-github", href="https://github.com/Jcheez", target="_blank"),
                 html.A(className="fab fa-linkedin", href="https://www.linkedin.com/in/jcheez/", target="_blank"),
-                html.A(className="far fa-window-maximize", href="https://resume-199e6.firebaseapp.com/", target="_blank")
+                html.A(className="far fa-window-maximize", href="https://jiajun.web.app", target="_blank")
             ]),
             "V3.9.235 | © JCHEEZ 2021 | INFO: ",
             html.A(" APIFY", href="https://apify.com/tugkan/covid-sg", style={"color":"#8f9193"}, target="_blank"),
