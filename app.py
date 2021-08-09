@@ -97,6 +97,7 @@ iconStyle = {
 }
 
 ### Main Graphs ###
+latest = latest[0]
 labels = ['Discharged', 'Active Cases', 'Deceased']
 values = [latest['discharged'], latest['activeCases'], latest['deceased']]
 casesBreakdown = go.Figure(data=[go.Pie(labels=labels, values=values)])

@@ -4,7 +4,7 @@ import numpy as np
 import aiohttp
 import pandas as pd
 
-links = ["https://api.apify.com/v2/key-value-stores/yaPbKe9e5Et61bl7W/records/LATEST?disableRedirect=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=15&desc=true", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=31&desc=true"] # Latest, 2 weeks, 1 Month
+links = ["https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=2&desc=true&offset=1", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=15&desc=true&offset=1", "https://api.apify.com/v2/datasets/suHgi59tSfu02VsRO/items?limit=31&desc=true&offset=1"] # Latest, 2 weeks, 1 Month
 async def main():
     async with aiohttp.ClientSession() as session:
         tasks = []
@@ -22,12 +22,16 @@ async def get_data(link, session):
 data = asyncio.get_event_loop().run_until_complete(main())
 
 ### Latest Item ###
+
 result = data[0]
-result['updatedActive'] = result['inCommunityFacilites'] + result['stableHospitalized'] + result['criticalHospitalized']
-result["updatedInfected"] = result['deceased'] + result['updatedActive'] + result['discharged']
+'''
+result['updatedActive'] = int(result['inCommunityFacilites']) + int(result['stableHospitalized']) + int(result['criticalHospitalized'])
+result["updatedInfected"] = int(result['deceased']) + int(result['updatedActive']) + int(result['discharged'])
 date = result['lastUpdatedAtApify']
 newdate = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.000Z")    
 result['lastUpdatedAtApify'] = str(newdate)
+
+'''
 
 def map_func(dictionary):
         dictionary["date"] = str(datetime.datetime.strptime(dictionary['lastUpdatedAtApify'], "%Y-%m-%dT%H:%M:%S.000Z").date())
@@ -76,7 +80,7 @@ def comparePast2Days(data):
 
     return result
 
+result = formatResult(data[0])
 twoWeeks = formatResult(data[1])
-
 oneMonth = formatResult(data[2])
 latestStatsComparison = comparePast2Days(twoWeeks)
